@@ -1,13 +1,8 @@
 package utils;
 
 import com.google.gson.*;
-import dtos.FluctuationDTO;
-import dtos.SymbolsDTO;
-import dtos.ValutaDTO;
-import facades.ValutaFacade;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import javax.persistence.EntityManagerFactory;
 import java.io.IOException;
