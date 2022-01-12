@@ -17,11 +17,6 @@ public class HttpUtils {
     private static Gson gson = new Gson();
 
     private static final EntityManagerFactory EMF = EMF_Creator.createEntityManagerFactory();
-    public static final ValutaFacade VALUTA_FACADE = ValutaFacade.getValutaFacade(EMF);
-
-    public static void main(String[] args) throws IOException {
-        histogram("2020-01-01", "2020-12-12","EUR");
-    }
 
 //    public static CombinedDTO fetchDataSequential() throws IOException {
 //        String chuck = HttpUtils.fetchData("https://api.chucknorris.io/jokes/random");
@@ -46,97 +41,6 @@ public class HttpUtils {
 //
 //        return new CombinedDTO(chuckDTO, dadDTO);
 //    }
-
-    public static void histogram(String from, String to, String valuta)throws IOException{
-        String params = "?start_date="+from+"&"+"end_date="+to+"&"+"symbols=DKK"+"&"+"base="+valuta+"&"+"amount="+100;
-        JsonObject result = HttpUtils.fetchJson("https://api.exchangerate.host/timeseries" +params);
-        JsonElement val = result.get("rates");
-        System.out.println(val);
-
-        for(Map.Entry<String, JsonElement> entry : result.entrySet()){
-            System.out.println("key=" +entry.getKey() + "value=" +entry.getValue());
-        }
-
-    }
-
-    public static void iconScraber() throws Exception {
-        List<String> codeList = new ArrayList<>();
-        SymbolsDTO fromDB = VALUTA_FACADE.getAllSymbolsFromDB();
-        HashMap<String,String> svgMap = new HashMap<>();
-
-        fromDB.getAll().forEach(dtos -> codeList.add(dtos.getCode()));
-
-        codeList.forEach(codes -> {
-            String url = "https://www.valutakurser.dk/images/flags/"+codes+".svg";
-            try {
-                Document doc = Jsoup.connect(url).ignoreContentType(true).get();
-                Elements svg = doc.select("svg");
-                String elementAsString = svg.toString();
-                String className = "className=\"icon\" ";
-                String svgStringWithClass = substring(elementAsString, 5,className);
-                svgMap.put(codes,svgStringWithClass);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
-
-        VALUTA_FACADE.persistFlags(svgMap);
-
-    }
-
-    public static String substring(String str, int index,String stringToAdd){
-        return str.substring(0, index) + stringToAdd + str.substring(index, str.length());
-    }
-
-
-    public static FluctuationDTO getFluctuationRates(String from, String to, String valuta)throws IOException{
-        String params = "?start_date="+from+"&"+"end_date="+to+"&"+"symbols="+valuta+"&"+"places="+4;
-        JsonObject result = HttpUtils.fetchJson("https://api.exchangerate.host/fluctuation" +params);
-        HashMap val = gson.fromJson(result.get("rates"), HashMap.class);
-
-        FluctuationDTO dto = gson.fromJson(String.valueOf(val.get(valuta)),FluctuationDTO.class);
-
-        return dto;
-    }
-
-    public static List<ValutaDTO> getLatestRatesFromBase(String base)throws IOException{
-        String params = "?base="+base;
-        JsonObject result = HttpUtils.fetchJson("https://api.exchangerate.host/latest" +params);
-        HashMap rates = gson.fromJson(result.get("rates"), HashMap.class);
-        List<ValutaDTO> rateList = new ArrayList<>();
-
-        rates.forEach((k,v) -> {
-            ValutaDTO valutaDTO = new ValutaDTO();
-            String key = k.toString();
-            Double value = Double.parseDouble(v.toString());
-            valutaDTO.setValue(value * 100);
-            valutaDTO.setCode(key);
-            rateList.add(valutaDTO);
-        });
-      return rateList;
-    }
-
-    public static Double convertFromTo(String from, String to, Double amount) throws IOException {
-        String params = "?from="+from+"&"+"to="+to+"&"+"amount="+amount;
-        JsonObject result = HttpUtils.fetchJson("https://api.exchangerate.host/convert"+params);
-        return result.get("result").getAsDouble();
-    }
-
-
-    public static ValutaDTO getSingleValutaValue(String code) throws IOException {
-        JsonObject valuta = HttpUtils.fetchJson("https://api.exchangerate.host/latest?base=USD&amount=100&symbols="+code);
-        HashMap val = gson.fromJson(valuta.get("rates"), HashMap.class);
-
-        ValutaDTO valutaDTO = new ValutaDTO();
-
-        val.forEach((k,v) -> {
-            String key = k.toString();
-            Double value = Double.parseDouble(v.toString());
-            valutaDTO.setValue(value);
-            valutaDTO.setCode(key);
-        });
-        return valutaDTO;
-    }
 
 
     public static JsonObject fetchJson(String _url) throws IOException {
