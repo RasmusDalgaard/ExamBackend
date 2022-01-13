@@ -1,8 +1,6 @@
 package dtos;
 
-
 import entities.Car;
-import entities.Race;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,8 +11,6 @@ public class CarDTO {
     private String brand;
     private String make;
     private int year;
-    private List<DriverDTO> driverDTOs;
-    private List<RaceDTO> raceDTOS;
 
     public CarDTO(Car car) {
         this.id = car.getId();
@@ -22,11 +18,9 @@ public class CarDTO {
         this.brand = car.getBrand();
         this.make = car.getMake();
         this.year = car.getYear();
-        this.driverDTOs = DriverDTO.getDTOs(car.getDrivers());
-        this.raceDTOS = RaceDTO.getDTOs(car.getRaces());
     }
 
-    public static List<CarDTO> getDTOs (List<Car> cars) {
+    public static List<CarDTO> getDTOs(List<Car> cars){
         List<CarDTO> carDTOS = new ArrayList<>();
         if (cars != null){
             cars.forEach(car -> carDTOS.add(new CarDTO(car)));
@@ -38,27 +32,39 @@ public class CarDTO {
         return id;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getBrand() {
         return brand;
     }
 
+    public void setBrand(String brand) {
+        this.brand = brand;
+    }
+
     public String getMake() {
         return make;
+    }
+
+    public void setMake(String make) {
+        this.make = make;
     }
 
     public int getYear() {
         return year;
     }
 
-    public List<DriverDTO> getDriverDTOs() {
-        return driverDTOs;
-    }
-
-    public List<RaceDTO> getRaceDTOS() {
-        return raceDTOS;
+    public void setYear(int year) {
+        this.year = year;
     }
 }

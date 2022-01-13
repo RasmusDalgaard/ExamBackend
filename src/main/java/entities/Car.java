@@ -5,6 +5,7 @@ import dtos.CarDTO;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 public class Car {
@@ -18,11 +19,11 @@ public class Car {
     private String make;
     private int year;
 
+    @ManyToMany(mappedBy = "cars", cascade = CascadeType.PERSIST)
+    List<Race> races;
+
     @OneToMany(mappedBy = "car", cascade = CascadeType.PERSIST)
     private List<Driver> drivers;
-
-    @ManyToMany(mappedBy = "cars")
-    private List<Race> races;
 
     public Car() {
 
@@ -37,12 +38,20 @@ public class Car {
         this.races = new ArrayList<>();
     }
 
-    public void addDriverToCar(Driver driver) {
+    public void addRace(Race race) {
+        if (race != null) {
+            this.races.add(race);
+            race.getCars().add(this);
+        }
+    }
+
+    public void addDriver(Driver driver) {
         if (driver != null) {
             this.drivers.add(driver);
             driver.setCar(this);
         }
     }
+
 
     public void removeDrivers() {
         for (Driver driver: this.getDrivers()) {
@@ -57,6 +66,7 @@ public class Car {
             this.getRaces().remove(race);
         }
     }
+
 
     public static Car getEntity(CarDTO carDTO) {
         if (carDTO != null) {
@@ -120,5 +130,18 @@ public class Car {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Car car = (Car) o;
+        return year == car.year && Objects.equals(id, car.id) && Objects.equals(name, car.name) && Objects.equals(brand, car.brand) && Objects.equals(make, car.make) && Objects.equals(drivers, car.drivers) && Objects.equals(races, car.races);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, brand, make, year, drivers, races);
     }
 }

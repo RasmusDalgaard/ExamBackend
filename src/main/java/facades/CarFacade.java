@@ -2,8 +2,6 @@ package facades;
 
 import dtos.CarDTO;
 import entities.Car;
-import entities.Driver;
-import entities.Race;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -34,6 +32,7 @@ public class CarFacade {
         try {
             em.getTransaction().begin();
             TypedQuery<Car> query = em.createQuery("SELECT c FROM Car c JOIN c.races r WHERE r.id =: raceId", Car.class);
+            query.setParameter("raceId", raceId);
             List<Car> res = query.getResultList();
             em.getTransaction().commit();
             return (List<CarDTO>) (List<?>) res;

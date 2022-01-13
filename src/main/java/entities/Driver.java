@@ -1,6 +1,7 @@
 package entities;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 public class Driver {
@@ -12,33 +13,18 @@ public class Driver {
     private int birthyear;
     private String gender;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne
     private Car car;
 
     public Driver() {
-
-    }
-
-    public Driver(String name, int birthyear, String gender, Car car) {
-        this.name = name;
-        this.birthyear = birthyear;
-        this.gender = gender;
-        this.car = car;
     }
 
     public Driver(String name, int birthyear, String gender) {
         this.name = name;
         this.birthyear = birthyear;
         this.gender = gender;
-        this.car = null;
     }
 
-    public void addCar(Car car) {
-        if (car != null && this.getCar() == null) {
-            this.setCar(car);
-            car.getDrivers().add(this);
-        }
-    }
 
     public String getName() {
         return name;
@@ -78,5 +64,18 @@ public class Driver {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Driver driver = (Driver) o;
+        return birthyear == driver.birthyear && Objects.equals(id, driver.id) && Objects.equals(name, driver.name) && Objects.equals(gender, driver.gender) && Objects.equals(car, driver.car);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, birthyear, gender, car);
     }
 }

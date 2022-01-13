@@ -26,17 +26,16 @@ public class SetupTestUsers {
 
         Driver driver = new Driver("Rapper", 1998, "Male");
         Car car = new Car("The winner", "Benz", "Mercedes", 1987);
-        Race race = new Race("Best Race Ever", new Date(), 1.5, "Springfield");
+        Race race = new Race("Best Race Ever", "13-01-2022", 1.5, "Springfield");
 
         if (admin.getUserPass().equals("test") || user.getUserPass().equals("test") || both.getUserPass().equals("test"))
             throw new UnsupportedOperationException("You have not changed the passwords");
 
         em.getTransaction().begin();
 
-        driver.addCar(car);
-        em.persist(driver);
-        race.addCarToRace(car);
-        em.persist(race);
+        car.addDriver(driver);
+        car.addRace(race);
+        em.persist(car);;
 
         Role userRole = new Role("user");
         Role adminRole = new Role("admin");

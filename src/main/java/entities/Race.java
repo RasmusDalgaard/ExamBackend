@@ -1,12 +1,11 @@
 package entities;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import dtos.RaceDTO;
 
 import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 public class Race {
@@ -16,18 +15,26 @@ public class Race {
     private Integer id;
 
     private String name;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM--dd")
-    private Date date;
+    private String date;
     private double time;
     private String location;
 
-    @ManyToMany(cascade = CascadeType.PERSIST)
+    @ManyToMany
     private List<Car> cars;
 
     public Race() {
     }
 
-    public Race(String name, Date date, double time, String location) {
+    public Race(int id, String name, String date, double time, String location) {
+        this.id = id;
+        this.name = name;
+        this.date = date;
+        this.time = time;
+        this.location = location;
+        this.cars = new ArrayList<>();
+    }
+
+    public Race(String name, String date, double time, String location) {
         this.name = name;
         this.date = date;
         this.time = time;
@@ -41,6 +48,7 @@ public class Race {
             car.getRaces().add(this);
         }
     }
+
 
     public static List<Race> getEntities(List<RaceDTO> raceDTOS) {
         List<Race> races = new ArrayList<>();
@@ -58,11 +66,11 @@ public class Race {
         this.name = name;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
@@ -96,5 +104,18 @@ public class Race {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Race race = (Race) o;
+        return Double.compare(race.time, time) == 0 && Objects.equals(id, race.id) && Objects.equals(name, race.name) && Objects.equals(date, race.date) && Objects.equals(location, race.location) && Objects.equals(cars, race.cars);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, date, time, location, cars);
     }
 }

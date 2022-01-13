@@ -1,8 +1,6 @@
 package facades;
 
-import dtos.CarDTO;
 import dtos.DriverDTO;
-import entities.Car;
 import entities.Driver;
 
 import javax.persistence.EntityManager;
@@ -17,7 +15,7 @@ public class DriverFacade {
     private DriverFacade() {
     }
 
-    public static DriverFacade getCarFacade(EntityManagerFactory _emf) {
+    public static DriverFacade getDriverFacade(EntityManagerFactory _emf) {
         if (instance == null) {
             emf = _emf;
             instance = new DriverFacade();
