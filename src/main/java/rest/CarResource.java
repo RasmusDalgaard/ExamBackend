@@ -39,7 +39,8 @@ public class CarResource {
     @PUT
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public String connectRaceToCar(@PathParam("id") int carId, int raceId) {
+    public String connectRaceToCar(@PathParam("id") int carId, String _raceId) {
+        Integer raceId = GSON.fromJson(_raceId, Integer.class);
         CarDTO carDTO = CAR_FACADE.connectRaceToCar(carId, raceId);
         return GSON.toJson(carDTO);
     }

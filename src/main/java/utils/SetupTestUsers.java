@@ -25,7 +25,9 @@ public class SetupTestUsers {
         User both = new User("user_admin", "test3");
 
         Driver driver = new Driver("Rapper", 1998, "Male");
+        Driver driver2 = new Driver("Bobbert", 1998, "Male");
         Car car = new Car("The winner", "Benz", "Mercedes", 1987);
+        Car car2 = new Car("The second best", "Yaris", "Toyota", 2000);
         Race race = new Race("Best Race Ever", "13-01-2022", 1.5, "Springfield");
 
         if (admin.getUserPass().equals("test") || user.getUserPass().equals("test") || both.getUserPass().equals("test"))
@@ -35,7 +37,9 @@ public class SetupTestUsers {
 
         car.addDriver(driver);
         car.addRace(race);
-        em.persist(car);;
+        em.persist(car);
+        car2.addDriver(driver2);
+        em.persist(car2);
 
         Role userRole = new Role("user");
         Role adminRole = new Role("admin");
