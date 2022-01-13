@@ -1,6 +1,6 @@
 package facades;
 
-import dtos.DriverDTO;
+import dtos.DriversDTO;
 import entities.Driver;
 
 import javax.persistence.EntityManager;
@@ -27,14 +27,14 @@ public class DriverFacade {
         return emf.createEntityManager();
     }
 
-    public List<DriverDTO> getDriversInRace(int raceId) {
+    public DriversDTO getDriversInRace(int raceId) {
         EntityManager em = getEntityManager();
         try {
             em.getTransaction().begin();
             TypedQuery<Driver> query = em.createQuery("SELECT d FROM Driver d JOIN d.car c JOIN c.races r WHERE r.id =: raceId", Driver.class);
             List<Driver> res = query.getResultList();
             em.getTransaction().commit();
-            return (List<DriverDTO>) (List<?>) res;
+            return new DriversDTO(res);
         } finally {
             em.close();
         }

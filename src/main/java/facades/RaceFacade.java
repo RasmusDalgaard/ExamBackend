@@ -1,6 +1,7 @@
 package facades;
 
 import dtos.RaceDTO;
+import dtos.RacesDTO;
 import entities.Car;
 import entities.Race;
 
@@ -28,14 +29,14 @@ public class RaceFacade {
         return emf.createEntityManager();
     }
 
-    public List<RaceDTO> getAllRaces() {
+    public RacesDTO getAllRaces() {
         EntityManager em = getEntityManager();
         try {
             em.getTransaction().begin();
             TypedQuery<Race> query = em.createQuery("SELECT r FROM Race r", Race.class);
             List<Race> res = query.getResultList();
             em.getTransaction().commit();
-            return (List<RaceDTO>) (List<?>) res;
+            return new RacesDTO(res);
         } finally {
             em.close();
         }

@@ -1,7 +1,9 @@
 package facades;
 
 import dtos.CarDTO;
+import dtos.CarsDTO;
 import entities.Car;
+import entities.Race;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -27,7 +29,7 @@ public class CarFacade {
         return emf.createEntityManager();
     }
 
-    public List<CarDTO> getCarsByRace(int raceId) {
+    public CarsDTO getCarsInRace(int raceId) {
         EntityManager em = getEntityManager();
         try {
             em.getTransaction().begin();
@@ -35,7 +37,7 @@ public class CarFacade {
             query.setParameter("raceId", raceId);
             List<Car> res = query.getResultList();
             em.getTransaction().commit();
-            return (List<CarDTO>) (List<?>) res;
+            return new CarsDTO(res);
         } finally {
             em.close();
         }
@@ -49,6 +51,32 @@ public class CarFacade {
             car.removeDrivers();
             car.removeRaces();
             em.remove(car);
+            em.getTransaction().commit();
+            return new CarDTO(car);
+        } finally {
+            em.close();
+        }
+    }
+
+    public CarsDTO getAllCars() {
+        EntityManager em = emf.createEntityManager();
+        try {
+            TypedQuery<Car> query = em.createQuery("SELECT c FROM Car c", Car.class);
+            List<Car> result = query.getResultList();
+            return new CarsDTO(result);
+        } finally {
+            em.close();
+        }
+    }
+
+    public CarDTO connectRaceToCar(int carId, int raceId) {
+        EntityManager em = emf.createEntityManager();
+        Car car = em.find(Car.class, carId);
+        Race race = em.find(Race.class, raceId);
+        car.addRace(race);
+        try {
+            em.getTransaction().begin();
+            em.merge(car);
             em.getTransaction().commit();
             return new CarDTO(car);
         } finally {
