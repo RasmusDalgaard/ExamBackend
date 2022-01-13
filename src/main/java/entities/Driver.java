@@ -25,7 +25,6 @@ public class Driver {
         this.gender = gender;
     }
 
-
     public String getName() {
         return name;
     }

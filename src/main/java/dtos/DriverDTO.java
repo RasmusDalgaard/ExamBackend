@@ -12,6 +12,9 @@ public class DriverDTO {
     private int birthyear;
     private String gender;
 
+    public DriverDTO() {
+    }
+
     public DriverDTO(Driver driver) {
         this.id = driver.getId();
         this.name = driver.getName();

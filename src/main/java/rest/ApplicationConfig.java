@@ -31,6 +31,8 @@ public class ApplicationConfig extends Application {
         resources.add(rest.DemoResource.class);
         resources.add(rest.RenameMeResource.class);
         resources.add(rest.RaceResource.class);
+        resources.add(rest.DriverResource.class);
+        resources.add(rest.CarResource.class);
         resources.add(security.JWTAuthenticationFilter.class);
         resources.add(security.LoginEndpoint.class);
         resources.add(security.RegisterEndpoint.class);

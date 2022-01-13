@@ -3,6 +3,7 @@ package rest;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dtos.DriversDTO;
+import dtos.RaceDTO;
 import facades.DriverFacade;
 import utils.EMF_Creator;
 

@@ -33,7 +33,7 @@ public class CarFacade {
         EntityManager em = getEntityManager();
         try {
             em.getTransaction().begin();
-            TypedQuery<Car> query = em.createQuery("SELECT c FROM Car c JOIN c.races r WHERE r.id =: raceId", Car.class);
+            TypedQuery<Car> query = em.createQuery("SELECT c FROM Car c JOIN c.races r WHERE r.id IN (:raceId)", Car.class);
             query.setParameter("raceId", raceId);
             List<Car> res = query.getResultList();
             em.getTransaction().commit();

@@ -58,6 +58,14 @@ public class Race {
         return races;
     }
 
+    public static Race getEntity(RaceDTO raceDTO) {
+        if (raceDTO != null) {
+            Race race = new Race(raceDTO.getName(), raceDTO.getDate(), raceDTO.getTime(), raceDTO.getLocation());
+            return race;
+        }
+        return null;
+    }
+
     public String getName() {
         return name;
     }

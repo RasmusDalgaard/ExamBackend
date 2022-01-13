@@ -21,6 +21,16 @@ public class RaceDTO {
         this.location = race.getLocation();
     }
 
+    public RaceDTO(String name, String date, double time, String location) {
+        this.name = name;
+        this.date = date;
+        this.time = time;
+        this.location = location;
+    }
+
+    public RaceDTO() {
+    }
+
     public static List<RaceDTO> getDTOs(List<Race> races){
         List<RaceDTO> raceDTOS = new ArrayList<>();
         if (races != null){
