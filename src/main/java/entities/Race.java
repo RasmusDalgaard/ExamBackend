@@ -1,6 +1,7 @@
 package entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import dtos.RaceDTO;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -39,6 +40,14 @@ public class Race {
             this.cars.add(car);
             car.getRaces().add(this);
         }
+    }
+
+    public static List<Race> getEntities(List<RaceDTO> raceDTOS) {
+        List<Race> races = new ArrayList<>();
+        if(raceDTOS != null){
+            raceDTOS.forEach(raceDTO -> races.add(new Race(raceDTO.getName(), raceDTO.getDate(), raceDTO.getTime(), raceDTO.getLocation())));
+        }
+        return races;
     }
 
     public String getName() {

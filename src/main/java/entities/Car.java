@@ -1,5 +1,7 @@
 package entities;
 
+import dtos.CarDTO;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +42,28 @@ public class Car {
             this.drivers.add(driver);
             driver.setCar(this);
         }
+    }
+
+    public void removeDrivers() {
+        for (Driver driver: this.getDrivers()) {
+            driver.setCar(null);
+            this.getDrivers().remove(driver);
+        }
+    }
+
+    public void removeRaces() {
+        for (Race race: this.getRaces()) {
+            race.getCars().remove(this);
+            this.getRaces().remove(race);
+        }
+    }
+
+    public static Car getEntity(CarDTO carDTO) {
+        if (carDTO != null) {
+            Car car = new Car(carDTO.getName(), carDTO.getBrand(), carDTO.getMake(), carDTO.getYear());
+            return car;
+        }
+        return null;
     }
 
     public String getName() {
