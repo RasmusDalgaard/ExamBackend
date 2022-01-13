@@ -1,11 +1,11 @@
 package utils;
 
 
-import entities.Role;
-import entities.User;
+import entities.*;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import java.util.Date;
 
 public class SetupTestUsers {
 
@@ -20,14 +20,24 @@ public class SetupTestUsers {
         // Also, either delete this file, when users are created or rename and add to .gitignore
         // Whatever you do DO NOT COMMIT and PUSH with the real passwords
 
-        User user = new User("user", "test");
-        User admin = new User("admin", "test");
-        User both = new User("user_admin", "test");
+        User user = new User("user", "test1");
+        User admin = new User("admin", "test2");
+        User both = new User("user_admin", "test3");
+
+        Driver driver = new Driver("Rapper", 1998, "Male");
+        Car car = new Car("The winner", "Benz", "Mercedes", 1987);
+        Race race = new Race("Best Race Ever", new Date(), 1.5, "Springfield");
 
         if (admin.getUserPass().equals("test") || user.getUserPass().equals("test") || both.getUserPass().equals("test"))
             throw new UnsupportedOperationException("You have not changed the passwords");
 
         em.getTransaction().begin();
+
+        driver.addCar(car);
+        em.persist(driver);
+        race.addCarToRace(car);
+        em.persist(race);
+
         Role userRole = new Role("user");
         Role adminRole = new Role("admin");
         user.addRole(userRole);
@@ -40,6 +50,8 @@ public class SetupTestUsers {
         em.persist(admin);
         em.persist(both);
         em.getTransaction().commit();
+
+
         System.out.println("PW: " + user.getUserPass());
         System.out.println("Testing user with OK password: " + user.verifyPassword("test"));
         System.out.println("Testing user with wrong password: " + user.verifyPassword("test1"));
