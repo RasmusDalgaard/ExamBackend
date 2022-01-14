@@ -4,10 +4,12 @@ import dtos.CarDTO;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 
 @Entity
+@NamedQuery(name = "Car.deleteAllRows", query = "DELETE from Car ")
 public class Car {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -54,18 +56,21 @@ public class Car {
 
 
     public void removeDrivers() {
-        for (Driver driver: this.getDrivers()) {
+        for (Iterator<Driver> iterator = this.drivers.iterator(); iterator.hasNext();) {
+            Driver driver = iterator.next();
+            iterator.remove();
             driver.setCar(null);
-            this.getDrivers().remove(driver);
         }
     }
 
     public void removeRaces() {
-        for (Race race: this.getRaces()) {
+        for (Iterator<Race> iterator = this.races.iterator(); iterator.hasNext();) {
+            Race race = iterator.next();
+            iterator.remove();
             race.getCars().remove(this);
-            this.getRaces().remove(race);
         }
     }
+
 
 
     public static Car getEntity(CarDTO carDTO) {

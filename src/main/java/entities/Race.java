@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
+@NamedQuery(name = "Race.deleteAllRows", query = "DELETE from Race ")
+
 public class Race {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,7 +21,7 @@ public class Race {
     private double time;
     private String location;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.PERSIST)
     private List<Car> cars;
 
     public Race() {

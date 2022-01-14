@@ -73,9 +73,10 @@ public class CarFacade {
         EntityManager em = emf.createEntityManager();
         Car car = em.find(Car.class, carId);
         Race race = em.find(Race.class, raceId);
-        car.addRace(race);
+
         try {
             em.getTransaction().begin();
+            car.addRace(race);
             em.merge(car);
             em.getTransaction().commit();
             return new CarDTO(car);

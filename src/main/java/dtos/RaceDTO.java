@@ -1,6 +1,5 @@
 package dtos;
 
-import entities.Car;
 import entities.Race;
 
 import java.util.ArrayList;

@@ -46,10 +46,10 @@ public class CarResource {
     }
 
 
-    @Path("/{id}")
+    @Path("/delete/{id}")
     @DELETE
     @Produces(MediaType.APPLICATION_JSON)
-    public String deleteBoat(@PathParam("id") int id) {
+    public String deleteCar(@PathParam("id") int id) {
         CarDTO carDTO = CAR_FACADE.deleteCar(id);
         return GSON.toJson(carDTO);
     }

@@ -4,6 +4,8 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
+@NamedQuery(name = "Driver.deleteAllRows", query = "DELETE from Driver ")
+
 public class Driver {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
