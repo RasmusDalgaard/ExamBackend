@@ -99,6 +99,8 @@
         </dependency>
 
 
+
+
         <!-- Grizly Server used to test REST endpoints -->
         <dependency>
             <groupId>org.glassfish.jersey.containers</groupId>
@@ -121,12 +123,6 @@
             <groupId>com.nimbusds</groupId>
             <artifactId>nimbus-jose-jwt</artifactId>
             <version>9.0.1</version>
-        </dependency>
-        
-        <dependency>
-            <groupId>org.mindrot</groupId>
-            <artifactId>jbcrypt</artifactId>
-            <version>0.4</version>
         </dependency>
 
         <!-- Used for setting database name in pom.xml -->
@@ -162,6 +158,7 @@
             </plugin>          
             
             <!--This is used to enable @BeforeAll etc used in jUnit 5 -->
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>

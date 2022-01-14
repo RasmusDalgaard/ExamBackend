@@ -3,17 +3,14 @@ package facades;
 import entities.Car;
 import entities.Driver;
 import entities.Race;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import utils.EMF_Creator;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
 import static org.junit.jupiter.api.Assertions.*;
-
+@Disabled
 class CarFacadeTest {
     private static EntityManagerFactory emf;
     private static EntityManager em;
